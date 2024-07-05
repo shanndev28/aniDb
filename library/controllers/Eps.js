@@ -11,7 +11,7 @@ export const getEpisode = async (req, res) => {
             }]
         })
 
-        if (!response || !response.length) return res.statu(400).json({ error: true, message: "Tidak ditemukan" })
+        if (!response || !response.length) return res.status(400).json({ error: true, message: "Tidak ditemukan" })
         return res.status(200).json({ error: false, data: response })
     } catch (error) {
         return res.status(400).json({ error: true, message: 'Database Error' })
@@ -33,7 +33,7 @@ export const getEpisodeById = async (req, res) => {
             }]
         })
 
-        if (!response) return res.statu(400).json({ error: true, message: "Tidak ditemukan" })
+        if (!response) return res.status(400).json({ error: true, message: "Tidak ditemukan" })
         return res.status(200).json({ error: false, data: response })
     } catch (error) {
         return res.status(400).json({ error: true, message: 'Database Error' })
@@ -56,7 +56,7 @@ export const getEpisodeByMovieId = async (req, res) => {
             }]
         })
 
-        if (!response || !response.length) return res.statu(400).json({ error: true, message: "Tidak ditemukan" })
+        if (!response || !response.length) return res.status(400).json({ error: true, message: "Tidak ditemukan" })
         return res.status(200).json({ error: false, data: response })
     } catch (error) {
         return res.status(400).json({ error: true, message: 'Database error' })
