@@ -25,7 +25,7 @@ export const addFavorite = async (req, res) => {
     })
 
     if (!dataMovie) return res.status(400).json({ error: true, message: "Anime tidak ditemukan" })
-    if (req.session.favorite.find((e) => e.uuid === req.params.id)) return res.status(200).json({ error: false, message: "Data berhasil ditambahkan" })
+    if (req.session.favorite.find((e) => e.uuid === req.params.id)) return res.status(200).json({ error: false, message: "Data telah ditambahkan" })
 
     req.session.favorite.push(dataMovie)
     return res.status(200).json({ error: false, message: "Data berhasil ditambahkan" })
