@@ -9,6 +9,7 @@ import Eps from './library/routes/Eps.js'
 import Fav from './library/routes/Fav.js'
 import Movies from './library/routes/Movies.js'
 import History from './library/routes/History.js'
+import AdminAccess from './library/routes/add.js'
 
 dotenv.config()
 const app = express()
@@ -46,6 +47,7 @@ app.use(Eps)
 app.use(Fav)
 app.use(Movies)
 app.use(History)
+app.use(AdminAccess)
 
 // store.sync();
 app.listen(process.env.APP_PORT, () => console.log('Server up and running on : ' + process.env.APP_PORT))

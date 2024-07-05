@@ -62,3 +62,38 @@ export const getEpisodeByMovieId = async (req, res) => {
         return res.status(400).json({ error: true, message: 'Database error' })
     }
 }
+
+export const tambahEpsAnime = async (req, res) => {
+    const { uuid, movieUuid, title, video, eps } = req.body
+    if (!uuid || !movieUuid || !title || !video || !eps) return res.status(400).json({ error: true, message: "Parameter Invalid`s" })
+
+    try {
+        const dataDuplicateCheck = await Eps.findOne({
+            where: {
+                uuid: uuid
+            }
+        })
+
+        if (dataDuplicateCheck) return res.status(400).json({ error: true, message: "Data sudah tersedia di database" })
+
+        const dataMovieId = await Movies.findOne({
+            where: {
+                movieUuid: movieUuid,
+            }
+        })
+
+        if (!dataMovieId) return res.status(400).json({ error: true, message: "Data movieUuid Invalid`s" })
+
+        await Eps.create({
+            uuid: uuid,
+            movieUuid: movieUuid,
+            title: title,
+            video: video,
+            eps: eps,
+        })
+
+        return res.status(200).json({ error: false, message: "Data berhasil ditambahkan" })
+    } catch (error) {
+        return res.status(400).json({ error: true, message: "Database error" })
+    }
+}

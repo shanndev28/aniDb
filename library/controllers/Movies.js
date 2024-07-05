@@ -99,3 +99,33 @@ export const getAnimesByGenre = async (req, res) => {
         return res.status(400).json({ error: true, message: 'Database Error' })
     }
 }
+
+export const tambahAnime = async (req, res) => {
+    const { uuid, cover, title, description, releaseDate, genre, studio, status } = req.body
+    if (!uuid || !cover || !title || !description || !releaseDate || !genre || !studio || !status) return res.status(400).json({ error: true, message: "Parameter Invalid`s" })
+
+    try {
+        const dataDuplicateCheck = await Movies.findOne({
+            where: {
+                uuid: uuid
+            }
+        })
+
+        if (dataDuplicateCheck) return res.status(400).json({ error: true, message: "Data sudah tersedia di database" })
+
+        await Movies.create({
+            uuid: uuid,
+            cover: cover,
+            title: title,
+            description: description,
+            releaseDate: releaseDate,
+            genre: genre,
+            studio: studio,
+            status: status,
+        })
+
+        return res.status(200).json({ error: false, message: "Data berhasil ditambahkan" })
+    } catch (error) {
+        return res.status(400).json({ error: true, message: "Database error" })
+    }
+}
