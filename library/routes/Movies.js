@@ -1,15 +1,15 @@
 import express from 'express';
 import { getGenre } from '../controllers/Genre.js'
-import { getMovie, getMovieOngoing, getMovieById, getMovieByName, getMovieByGenre } from '../controllers/Movies.js';
+import { getAnimes, getAnimesOngoing, getAnimesById, getAnimesByName, getAnimesByGenre } from '../controllers/Movies.js';
 
 const router = express.Router();
 
-router.post('/movies', getMovie);
-router.get('/movies/genre', getGenre)
-router.get('/movies/id/:id', getMovieById);
-router.get('/movies/:genre', getMovieByGenre);
-router.post('/movies/ongoing', getMovieOngoing);
-router.get('/movies/title/:title', getMovieByName);
+router.post('/movies', getAnimes);
+router.get('/movies/genre', getGenre);
+router.get('/movies/id/:id', getAnimesById);
+router.get('/movies/:genre', getAnimesByGenre);
+router.post('/movies/ongoing', getAnimesOngoing);
+router.get('/movies/title/:title', getAnimesByName);
 
 
 export default router;

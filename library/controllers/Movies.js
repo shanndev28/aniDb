@@ -2,7 +2,7 @@ import { Op } from "sequelize";
 import Genre from "../models/Genre.js"
 import Movies from "../models/Movies.js";
 
-export const getMovie = async (req, res) => {
+export const getAnimes = async (req, res) => {
     try {
         const response = await Movies.findAll({
             order: [['title', 'ASC']],
@@ -10,13 +10,14 @@ export const getMovie = async (req, res) => {
             attributes: ['uuid', 'cover', 'title', 'description', 'releaseDate', 'genre', 'studio', 'status']
         })
 
-        return res.status(200).json(response)
+        if (!response || !response.length) return res.status(400).json({ error: true, message: "Tidak ditemukan" })
+        return res.status(200).json({ error: false, data: response })
     } catch (error) {
-        return res.status(200).json({ error: true, msg: 'Database Error' })
+        return res.status(400).json({ error: true, message: 'Database Error' })
     }
 }
 
-export const getMovieOngoing = async (req, res) => {
+export const getAnimesOngoing = async (req, res) => {
     try {
         const response = await Movies.findAll({
             where: {
@@ -27,14 +28,15 @@ export const getMovieOngoing = async (req, res) => {
             attributes: ['uuid', 'cover', 'title', 'description', 'releaseDate', 'genre', 'studio', 'status']
         })
 
-        return res.status(200).json(response)
+        if (!response || !response.length) return res.status(400).json({ error: true, message: "Tidak ditemukan" })
+        return res.status(200).json({ error: false, data: response })
     } catch (error) {
-        return res.status(200).json({ error: true, msg: error.message })
+        return res.status(400).json({ error: true, message: error.message })
     }
 }
 
-export const getMovieById = async (req, res) => {
-    if (!req.params.id) return res.status(200).json({ error: true, msg: 'Parameter Invalid`s' })
+export const getAnimesById = async (req, res) => {
+    if (!req.params.id) return res.status(400).json({ error: true, message: 'Parameter Invalid`s' })
 
     try {
         const response = await Movies.findOne({
@@ -44,14 +46,15 @@ export const getMovieById = async (req, res) => {
             attributes: ['uuid', 'cover', 'title', 'description', 'releaseDate', 'genre', 'studio', 'status']
         })
 
+        if (!response) return res.status(400).json({ error: true, message: "Tidak ditemukan" })
         return res.status(200).json(response)
     } catch (error) {
-        return res.status(200).json({ error: true, msg: 'Database Error' })
+        return res.status(400).json({ error: true, message: 'Database Error' })
     }
 }
 
-export const getMovieByName = async (req, res) => {
-    if (!req.params.title) return res.status(200).json({ error: true, msg: 'Parameter Invalid`s' })
+export const getAnimesByName = async (req, res) => {
+    if (!req.params.title) return res.status(400).json({ error: true, message: 'Parameter Invalid`s' })
 
     try {
         const response = await Movies.findAll({
@@ -62,14 +65,15 @@ export const getMovieByName = async (req, res) => {
             attributes: ['uuid', 'cover', 'title', 'description', 'releaseDate', 'genre', 'studio', 'status']
         })
 
-        return res.status(200).json(response)
+        if (!response || !response.length) return res.status(400).json({ error: true, message: "TIdak ditemukan" })
+        return res.status(200).json({ error: true, data: response })
     } catch (error) {
-        return res.status(200).json({ error: true, msg: 'Database Error' })
+        return res.status(400).json({ error: true, message: 'Database Error' })
     }
 }
 
-export const getMovieByGenre = async (req, res) => {
-    if (!req.params.genre) return res.status(200).json({ error: true, msg: "Parameter Invalid`s" })
+export const getAnimesByGenre = async (req, res) => {
+    if (!req.params.genre) return res.status(400).json({ error: true, message: "Parameter Invalid`s" })
 
     const data = await Genre.findOne({
         where: {
@@ -77,7 +81,7 @@ export const getMovieByGenre = async (req, res) => {
         }
     })
 
-    if (!data) return res.status(200).json({ error: true, msg: "Data tidak ditemukan" })
+    if (!data) return res.status(400).json({ error: true, message: "Data tidak ditemukan" })
 
     try {
         const response = await Movies.findAll({
@@ -89,8 +93,9 @@ export const getMovieByGenre = async (req, res) => {
             attributes: ['uuid', 'cover', 'title', 'description', 'releaseDate', 'genre', 'studio', 'status']
         })
 
-        return res.status(200).json(response)
+        if (!response || !response.length) return res.statu(400).json({ error: true, message: "TIdak ditemukan" })
+        return res.status(200).json({ error: false, data: response })
     } catch (error) {
-        return res.status(200).json({ error: true, msg: 'Database Error' })
+        return res.status(400).json({ error: true, message: 'Database Error' })
     }
 }

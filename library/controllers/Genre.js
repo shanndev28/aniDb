@@ -6,8 +6,9 @@ export const getGenre = async (req, res) => {
             attributes: ['name']
         })
 
-        return res.status(200).json(response)
+        if (!response || !response.length) return res.status(400).json({ error: true, nessage: "Data genre tidak ditemukan" })
+        return res.status(200).json({ error: false, data: response })
     } catch (error) {
-        return res.status(200).json({ error: true, msg: "Database Error" })
+        return res.status(200).json({ error: true, message: "Database Error" })
     }
 }

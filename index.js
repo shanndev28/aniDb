@@ -22,6 +22,8 @@ const app = express()
 const sessionStore = sequelizeStore(session.Store)
 const store = new sessionStore({ db: db })
 
+app.set("json spaces", 3)
+
 app.use(express.json())
 app.use(cors({
     credentials: true,
@@ -46,4 +48,4 @@ app.use(Movies)
 app.use(History)
 
 // store.sync();
-app.listen(process.env.APP_PORT, () => console.log('Server up and running...'))
+app.listen(process.env.APP_PORT, () => console.log('Server up and running on : ' + process.env.APP_PORT))

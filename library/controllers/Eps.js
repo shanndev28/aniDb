@@ -11,14 +11,15 @@ export const getEpisode = async (req, res) => {
             }]
         })
 
-        return res.status(200).json(response)
+        if (!response || !response.length) return res.statu(400).json({ error: true, message: "Tidak ditemukan" })
+        return res.status(200).json({ error: false, data: response })
     } catch (error) {
-        return res.status(404).json({ error: true, msg: 'Database Error' })
+        return res.status(400).json({ error: true, message: 'Database Error' })
     }
 }
 
 export const getEpisodeById = async (req, res) => {
-    if (!req.params.id) return res.status(200).json({ error: true, msg: 'Parameter Invalid`s' })
+    if (!req.params.id) return res.status(400).json({ error: true, message: 'Parameter Invalid`s' })
 
     try {
         const response = await Eps.findOne({
@@ -32,14 +33,15 @@ export const getEpisodeById = async (req, res) => {
             }]
         })
 
-        return res.status(200).json(response)
+        if (!response) return res.statu(400).json({ error: true, message: "Tidak ditemukan" })
+        return res.status(200).json({ error: false, data: response })
     } catch (error) {
-        return res.status(404).json({ error: true, msg: 'Database Error' })
+        return res.status(400).json({ error: true, message: 'Database Error' })
     }
 }
 
 export const getEpisodeByMovieId = async (req, res) => {
-    if (!req.params.id) return res.status(200).json({ error: true, msg: 'Parameter Invalid`s' })
+    if (!req.params.id) return res.status(400).json({ error: true, message: 'Parameter Invalid`s' })
 
     try {
         const response = await Eps.findAll({
@@ -54,8 +56,9 @@ export const getEpisodeByMovieId = async (req, res) => {
             }]
         })
 
-        return res.status(200).json(response)
+        if (!response || !response.length) return res.statu(400).json({ error: true, message: "Tidak ditemukan" })
+        return res.status(200).json({ error: false, data: response })
     } catch (error) {
-        return res.status(404).json({ error: true, msg: 'Database error' })
+        return res.status(400).json({ error: true, message: 'Database error' })
     }
 }
