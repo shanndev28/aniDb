@@ -5,7 +5,6 @@ const { DataTypes } = Sequelize;
 
 const History = db.define('history', {
     uuid: {
-        primaryKey: true,
         type: DataTypes.STRING,
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
