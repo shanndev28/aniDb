@@ -58,7 +58,7 @@ export const addFavorite = async (req, res) => {
 
     try {
         await Favorite.create({
-            uuid: req.params.id,
+            uuid: dataMovie.uuid,
             session: req.sessionID,
             movieCover: dataMovie.cover,
             movieTitle: dataMovie.title
@@ -66,7 +66,7 @@ export const addFavorite = async (req, res) => {
 
         return res.status(200).json({ error: false, message: "Data berhasil ditambahkan" })
     } catch (error) {
-        return res.status(400).json({ error: true, s: req.sessionID, message: "Database error", msg: error.message, dataMovie, t: req.params.id })
+        return res.status(400).json({ error: true, message: "Database error" })
     }
 }
 
