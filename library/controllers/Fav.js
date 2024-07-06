@@ -66,7 +66,7 @@ export const addFavorite = async (req, res) => {
 
         return res.status(200).json({ error: false, message: "Data berhasil ditambahkan" })
     } catch (error) {
-        return res.status(400).json({ error: true, message: "Database error", msg: error.message, dataMovie })
+        return res.status(400).json({ error: true, message: "Database error", msg: error.message, dataMovie, t: req.params.id })
     }
 }
 
