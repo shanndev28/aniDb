@@ -38,6 +38,6 @@ export const deleteFavorite = async (req, res) => {
 
     let index = req.session.favorite.indexOf(req.params.id)
 
-    req.session.favorite.splice(index, 1)
+    req.session.favorite.splice(index - 1, 1)
     return res.status(200).json({ error: true, message: "Data berhasil dihapus" })
 }
