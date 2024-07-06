@@ -78,7 +78,7 @@ export const tambahEpsAnime = async (req, res) => {
 
         const dataMovieId = await Movies.findOne({
             where: {
-                movieUuid: movieUuid,
+                uuid: uuid,
             }
         })
 
