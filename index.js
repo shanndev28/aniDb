@@ -26,11 +26,11 @@ const store = new sessionStore({ db: db })
 app.set("json spaces", 3)
 
 app.use(express.json())
-// app.use(cors({
-//     credentials: true,
-//     origin: 'https://shann.cloud/'
+app.use(cors({
+    credentials: true,
+    origin: 'https://shann.cloud/'
 
-// }))
+}))
 
 app.use(session({
     secret: process.env.SESS_SECRET,
