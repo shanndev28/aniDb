@@ -56,18 +56,18 @@ export const addFavorite = async (req, res) => {
     })
     if (dataDupilcateCheck) return res.status(400).json({ error: true, message: "Data sudah tersedia di databse" })
 
-    try {
-        await Favorite.create({
-            uuid: dataMovie.uuid,
-            session: req.sessionID,
-            movieCover: dataMovie.cover,
-            movieTitle: dataMovie.title
-        })
+    // try {
+    await Favorite.create({
+        uuid: dataMovie.uuid,
+        session: req.sessionID,
+        movieCover: dataMovie.cover,
+        movieTitle: dataMovie.title
+    })
 
-        return res.status(200).json({ error: false, message: "Data berhasil ditambahkan" })
-    } catch (error) {
-        return res.status(400).json({ error: true, message: "Database error" })
-    }
+    return res.status(200).json({ error: false, message: "Data berhasil ditambahkan" })
+    // } catch (error) {
+    //     return res.status(400).json({ error: true, message: "Database error" })
+    // }
 }
 
 export const deleteFavorite = async (req, res) => {
