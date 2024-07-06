@@ -14,11 +14,11 @@ import AdminAccess from './library/routes/add.js'
 dotenv.config()
 const app = express()
 
-// async function as() {
-//     await db.sync();
-// }
+async function as() {
+    await db.sync();
+}
 
-// as()
+as()
 
 const sessionStore = sequelizeStore(session.Store)
 const store = new sessionStore({ db: db })
@@ -49,5 +49,5 @@ app.use(Movies)
 app.use(History)
 app.use(AdminAccess)
 
-// store.sync();
+store.sync();
 app.listen(process.env.APP_PORT, () => console.log('Server up and running on : ' + process.env.APP_PORT))
