@@ -2,7 +2,7 @@ import Movies from "../models/Movies.js"
 
 export const getFavorite = async (req, res) => {
     if (!req.session.favorite || !req.session.favorite.length) return res.status(400).json({ error: true, message: "Data favorite tidak ditemukan" })
-    return res.status(200).json(req.session.favorite)
+    return res.status(200).json({ error: false, data: req.session.favorite })
 }
 
 export const getFavoriteById = async (req, res) => {
