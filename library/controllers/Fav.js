@@ -89,7 +89,7 @@ export const deleteFavorite = async (req, res) => {
             }
         })
 
-        return res.status(200).json({ error: false, message: "Data berhasil ditambahkan" })
+        return res.status(200).json({ error: false, message: "Data berhasil dihapus" })
     } catch (error) {
         return res.status(400).json({ error: true, message: "Database error" })
     }
