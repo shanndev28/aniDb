@@ -84,8 +84,8 @@ export const deleteFavorite = async (req, res) => {
     try {
         await Favorite.destroy({
             where: {
-                uuid: dataMovie.uuid,
-                session: dataMovie.session
+                uuid: dataFavorite.uuid,
+                session: dataFavorite.session
             }
         })
 
