@@ -1,43 +1,97 @@
 import Movies from "../models/Movies.js"
+import Favorite from '../models/Favorite.js'
 
 export const getFavorite = async (req, res) => {
-    if (!req.session.favorite || !req.session.favorite.length) return res.status(400).json({ error: true, message: "Data favorite tidak ditemukan" })
-    return res.status(200).json({ error: false, data: req.session.favorite })
+    try {
+        const response = await Favorite.findAll({
+            where: {
+                session: req.sessionID
+            },
+            attributes: ['uuid', 'movieCover', 'movieTitle']
+        })
+
+        if (!response || !response.length) return res.status(400).json({ error: true, message: "Data favorite tidak ditemukan" })
+        return res.status(200).json({ error: false, data: response })
+    } catch (error) {
+        return res.status(400).json({ error: true, message: "Database error" })
+    }
 }
 
 export const getFavoriteById = async (req, res) => {
     if (!req.params.id) return res.status(400).json({ error: true, message: "Parameter Invalid`s" })
-    if (!req.session.favorite || !req.session.favorite.length) return res.status(400).json({ error: true, message: "Data favorite tidak ditemukan" })
-    if (!req.session.favorite.find((e) => e.uuid === req.params.id)) return res.status(400).json({ error: true, message: "Data favorite tidak ditemukan" })
 
-    return res.status(200).json({ error: false, favorite: true })
+    try {
+        const response = await Favorite.findOne({
+            where: {
+                uuid: req.params.id,
+                session: req.sessionID
+            }
+        })
+
+        if (!response) return res.status(400).json({ error: true, message: "Data favorite tidak ditemukan" })
+        return res.status(200).json({ error: false, favorite: true })
+    } catch (error) {
+        return res.status(400).json({ error: true, message: "Database error" })
+    }
 }
 
 export const addFavorite = async (req, res) => {
-    if (!req.session.favorite) req.session.favorite = []
     if (!req.params.id) return res.status(400).json({ error: true, message: "Parameter Invalid`s" })
 
+    // DATA MOVIE CHECK
     const dataMovie = await Movies.findOne({
         where: {
             uuid: req.params.id
         },
         attributes: ['uuid', 'cover', 'title']
     })
-
     if (!dataMovie) return res.status(400).json({ error: true, message: "Anime tidak ditemukan" })
-    if (req.session.favorite.find((e) => e.uuid === req.params.id)) return res.status(200).json({ error: false, message: "Data telah ditambahkan" })
 
-    req.session.favorite.push(dataMovie)
-    return res.status(200).json({ error: false, message: "Data berhasil ditambahkan" })
+    // DATA DUPLICATE CHECK
+    const dataDupilcateCheck = await Favorite.findOne({
+        where: {
+            uuid: req.params.id,
+            session: req.sessionID
+        }
+    })
+    if (dataDupilcateCheck) return res.status(400).json({ error: true, message: "Data sudah tersedia di databse" })
+
+    try {
+        await Favorite.create({
+            uuid: req.params.id,
+            session: req.sessionID,
+            movieCover: dataMovie.cover,
+            movieTitle: dataMovie.title
+
+        })
+
+        return res.status(200).json({ error: false, message: "Data berhasil ditambahkan" })
+    } catch (error) {
+        return res.status(400).json({ error: true, message: "Database error" })
+    }
 }
 
 export const deleteFavorite = async (req, res) => {
     if (!req.params.id) return res.status(400).json({ error: true, message: "Parameter Invalid`s" })
-    if (!req.session.favorite) return res.status(400).json({ error: true, message: "Data favorite tidak ditemukan" })
-    if (!req.session.favorite.find((e) => e.uuid === req.params.id)) return res.status(400).json({ error: true, message: "Data favorite tidak ditemukan" })
 
-    let index = req.session.favorite.indexOf(req.params.id)
+    const dataFavorite = await Favorite.findOne({
+        where: {
+            uuid: req.params.id,
+            session: req.sessionID,
+        }
+    })
+    if (!dataFavorite) return res.status(400).json({ error: true, message: "Data favorite tidak ditemukan" })
 
-    req.session.favorite.splice(index - 1, 1)
-    return res.status(200).json({ error: true, message: "Data berhasil dihapus" })
+    try {
+        await Favorite.destroy({
+            where: {
+                uuid: dataMovie.uuid,
+                session: dataMovie.session
+            }
+        })
+
+        return res.status(200).json({ error: false, message: "Data berhasil ditambahkan" })
+    } catch (error) {
+        return res.status(400).json({ error: true, message: "Database error" })
+    }
 }
