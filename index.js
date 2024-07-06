@@ -28,7 +28,7 @@ app.set("json spaces", 3)
 app.use(express.json())
 app.use(cors({
     credentials: true,
-    origin: 'https://shann.cloud/'
+    origin: 'https://shann.cloud'
 
 }))
 
